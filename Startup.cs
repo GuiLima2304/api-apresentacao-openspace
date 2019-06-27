@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -11,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OpenSpace.BancoDados;
+using OpenSpace.Profiles;
 
 namespace OpenSpace
 {
@@ -32,6 +34,12 @@ namespace OpenSpace
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+
+             MapperConfiguration mapperConfig = new MapperConfiguration(cfg => {
+                cfg.AddProfile(new AutoMapperProfile());
+            });
+                IMapper mapper = mapperConfig.CreateMapper();
+                services.AddSingleton(mapper);
 
             services.AddScoped<DbOpenSpace>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OpenSpace.Mapping;
 using OpenSpace.BancoDados;
+using AutoMapper;
+using OpenSpace.Model;
+
+
 
 namespace ApresentacaoController.Controllers
 {
@@ -13,16 +17,26 @@ namespace ApresentacaoController.Controllers
 
     public class ApresentacaoController:Controller{
         private readonly DbOpenSpace _context;
+        private readonly IMapper mapper;
 
-        public ApresentacaoController(DbOpenSpace context)
+        public ApresentacaoController(DbOpenSpace context, IMapper mapper)
         {
             _context = context;
+            this.mapper = mapper;
         }
 
          [HttpGet]
         public ActionResult Get(){
-            var apresentacoes = _context.Apresentacao.Include(a => a.Usuario).OrderBy(p => p.Id).Select(ApresentacaoMapping.MapFrom).ToList();
-            return Json(apresentacoes);
+            IEnumerable<Apresentacao> apresentacoes = _context
+            .Apresentacao
+            .Include(a => a.Usuario)
+            .OrderBy(p => p.Titulo)
+            .ToList();
+
+            IEnumerable<ApresentacaoModel> viewModelApresentacao = apresentacoes
+            .Select(x => mapper.Map<ApresentacaoModel>(x));
+
+            return Json(viewModelApresentacao);
         }
 
 
@@ -31,7 +45,7 @@ namespace ApresentacaoController.Controllers
             
             var getApresentacao = _context.Apresentacao.Find(id);
 
-            return Json(getApresentacao);
+            return Ok(getApresentacao);
         }
 
         [HttpPost]

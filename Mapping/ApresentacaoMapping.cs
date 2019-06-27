@@ -12,7 +12,7 @@ namespace OpenSpace.Mapping{
                 Id = apresentacao.Id,
                 Titulo = apresentacao.Titulo,
                 Descricao = apresentacao.Descricao,
-                Usuario = UsuarioMapping.Mapfrom(apresentacao.Usuario)
+                // Usuario = UsuarioMapping.Mapfrom(apresentacao.Usuario)
             };
 
 
