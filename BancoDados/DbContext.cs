@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace OpenSpace.Models
+namespace OpenSpace.BancoDados
 {
     public partial class DbOpenSpace : DbContext
     {

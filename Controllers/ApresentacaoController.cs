@@ -2,7 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using OpenSpace.Models;
+using OpenSpace.Mapping;
+using OpenSpace.BancoDados;
 
 namespace ApresentacaoController.Controllers
 {
@@ -20,8 +21,8 @@ namespace ApresentacaoController.Controllers
 
          [HttpGet]
         public ActionResult Get(){
-            var teste = _context.Apresentacao.OrderBy(p => p.Id);
-            return new JsonResult(teste);
+            var apresentacoes = _context.Apresentacao.Include(a => a.Usuario).OrderBy(p => p.Id).Select(ApresentacaoMapping.MapFrom).ToList();
+            return Json(apresentacoes);
         }
 
 
@@ -61,6 +62,7 @@ namespace ApresentacaoController.Controllers
                 if(tituloExistente != null){
 
                     tituloExistente.Titulo = value.Titulo;
+                    tituloExistente.Descricao = value.Descricao;
                     ctx.SaveChanges();
 
                 }else{

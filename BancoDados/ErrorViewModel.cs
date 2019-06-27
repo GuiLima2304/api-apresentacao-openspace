@@ -1,6 +1,6 @@
 using System;
 
-namespace OpenSpace.Models
+namespace OpenSpace.BancoDados
 {
     public class ErrorViewModel
     {

@@ -19,7 +19,7 @@ using OpenSpace;
 #line default
 #line hidden
 #line 2 "c:\Users\gsouza\OpenSpace\Views\_ViewImports.cshtml"
-using OpenSpace.Models;
+using OpenSpace.BancoDados;
 
 #line default
 #line hidden

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace OpenSpace.Models
+namespace OpenSpace.BancoDados
 {
     public partial class Usuario
     {
