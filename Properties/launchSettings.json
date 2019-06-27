@@ -7,7 +7,7 @@
       "sslPort": 44336
     }
   },
-  "profiles": {
+  "Profiless": {
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
