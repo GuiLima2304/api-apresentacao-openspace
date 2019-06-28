@@ -28,3 +28,5 @@ C:\Users\gsouza\OpenSpace\obj\Debug\netcoreapp2.2\OpenSpace.Views.pdb
 C:\Users\gsouza\OpenSpace\obj\Debug\netcoreapp2.2\OpenSpace.dll
 C:\Users\gsouza\OpenSpace\obj\Debug\netcoreapp2.2\OpenSpace.pdb
 C:\Users\gsouza\OpenSpace\obj\Debug\netcoreapp2.2\OpenSpace.csproj.CopyComplete
+c:\Users\gsouza\OpenSpace\bin\Debug\netcoreapp2.2\OpenSpace.xml
+c:\Users\gsouza\OpenSpace\obj\Debug\netcoreapp2.2\OpenSpace.xml

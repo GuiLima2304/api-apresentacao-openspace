@@ -25,8 +25,14 @@ namespace ApresentacaoController.Controllers
             this.mapper = mapper;
         }
 
+            ///<summary>
+            ///Mostra todas as apresentacoes
+            ///</summary>
+            ///<result></result>
+
          [HttpGet]
         public ActionResult Get(){
+
             IEnumerable<Apresentacao> apresentacoes = _context
             .Apresentacao
             .Include(a => a.Usuario)
@@ -36,9 +42,13 @@ namespace ApresentacaoController.Controllers
             IEnumerable<ApresentacaoModel> viewModelApresentacao = apresentacoes
             .Select(x => mapper.Map<ApresentacaoModel>(x));
 
-            return Json(viewModelApresentacao);
+            return Ok(viewModelApresentacao);
         }
 
+            ///<summary>
+            ///Mostra uma apresentacao especifica
+            ///</summary>
+            ///<result></result>
 
         [HttpGet("{id}")]
         public ActionResult Get(int id){
@@ -47,6 +57,11 @@ namespace ApresentacaoController.Controllers
 
             return Ok(getApresentacao);
         }
+
+            ///<summary>
+            ///Insere uma nova apresentacao
+            ///</summary>
+            ///<result></result>
 
         [HttpPost]
         public ActionResult Post(Apresentacao value){
@@ -65,6 +80,11 @@ namespace ApresentacaoController.Controllers
             return Ok();
          
         }
+
+            ///<summary>
+            ///Edita uma apresentacao
+            ///</summary>
+            ///<result></result>
 
         [HttpPut("{id}")]
         public ActionResult Put(Apresentacao value){
@@ -86,6 +106,11 @@ namespace ApresentacaoController.Controllers
 
             return Ok();
         }
+
+            ///<summary>
+            ///Deleta uma apresentacao
+            ///</summary>
+            ///<result></result>
 
         [HttpDelete("{id}")]
         public ActionResult Delete(Apresentacao value){

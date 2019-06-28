@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
@@ -24,7 +26,7 @@ namespace OpenSpace
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -44,6 +46,9 @@ namespace OpenSpace
 
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new Info{ Title = "My API", Version = "v1"});
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
 
             services.AddScoped<DbOpenSpace>();
@@ -67,12 +72,11 @@ namespace OpenSpace
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API v1");
+                c.RoutePrefix = string.Empty;
             });
 
-            /*app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseCookiePolicy();*/
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
