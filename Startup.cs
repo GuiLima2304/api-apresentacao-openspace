@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OpenSpace.BancoDados;
 using OpenSpace.Profiles;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace OpenSpace
 {
@@ -41,6 +42,10 @@ namespace OpenSpace
                 IMapper mapper = mapperConfig.CreateMapper();
                 services.AddSingleton(mapper);
 
+            services.AddSwaggerGen(c => {
+                c.SwaggerDoc("v1", new Info{ Title = "My API", Version = "v1"});
+            });
+
             services.AddScoped<DbOpenSpace>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -59,9 +64,15 @@ namespace OpenSpace
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+
+            /*app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseCookiePolicy();
+            app.UseCookiePolicy();*/
 
             app.UseMvc(routes =>
             {
