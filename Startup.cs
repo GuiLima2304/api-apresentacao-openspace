@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OpenSpace.Autenticacao;
 using OpenSpace.BancoDados;
 using OpenSpace.Profiles;
 using Swashbuckle.AspNetCore.Swagger;
@@ -49,10 +50,26 @@ namespace OpenSpace
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
+
+                 var security = new Dictionary<string, IEnumerable<string>>
+                {
+                    { "Bearer", new string[] { } },
+                };
+
+                c.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey"
+                });
+                c.AddSecurityRequirement(security);
             });
 
             services.AddScoped<DbOpenSpace>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddJwtValidation(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

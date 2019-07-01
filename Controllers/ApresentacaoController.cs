@@ -6,14 +6,15 @@ using OpenSpace.Mapping;
 using OpenSpace.BancoDados;
 using AutoMapper;
 using OpenSpace.Model;
-
-
+using OpenSpace.Base;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ApresentacaoController.Controllers
 {
 
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
 
     public class ApresentacaoController:Controller{
         private readonly DbOpenSpace _context;
@@ -39,8 +40,8 @@ namespace ApresentacaoController.Controllers
             .OrderBy(p => p.Titulo)
             .ToList();
 
-            IEnumerable<ApresentacaoModel> viewModelApresentacao = apresentacoes
-            .Select(x => mapper.Map<ApresentacaoModel>(x));
+            IEnumerable<ApresentacaoModel> viewModelApresentacao = apresentacoes.Select(x => mapper.Map<ApresentacaoModel>(x));
+            //GenericResponse<List<Model.ApresentacaoModel>> response = new GenericResponse<List<Model.Apresentacao>>(Model.ToList());
 
             return Ok(viewModelApresentacao);
         }

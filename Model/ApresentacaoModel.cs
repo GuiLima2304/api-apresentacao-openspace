@@ -10,6 +10,4 @@ namespace OpenSpace.Model{
         public UsuarioModel Usuario { get; set; }
 
     }
-
-
 }
