@@ -41,9 +41,8 @@ namespace ApresentacaoController.Controllers
             .ToList();
 
             IEnumerable<ApresentacaoModel> viewModelApresentacao = apresentacoes.Select(x => mapper.Map<ApresentacaoModel>(x));
-            //GenericResponse<List<Model.ApresentacaoModel>> response = new GenericResponse<List<Model.Apresentacao>>(Model.ToList());
-
-            return Ok(viewModelApresentacao);
+            GenericResponse<List<ApresentacaoModel>> response = new GenericResponse<List<ApresentacaoModel>>(viewModelApresentacao.ToList());
+            return Ok(response);
         }
 
             ///<summary>
