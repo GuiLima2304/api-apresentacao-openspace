@@ -8,8 +8,12 @@ using AutoMapper;
 using OpenSpace.Model;
 using OpenSpace.Base;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using System;
+using System.Threading.Tasks;
+using OpenSpace.Services;
 
-namespace ApresentacaoController.Controllers
+namespace OpenSpace.Controllers
 {
 
     [Route("api/[controller]")]
@@ -17,13 +21,12 @@ namespace ApresentacaoController.Controllers
     [Authorize]
 
     public class ApresentacaoController:Controller{
-        private readonly DbOpenSpace _context;
-        private readonly IMapper mapper;
-
-        public ApresentacaoController(DbOpenSpace context, IMapper mapper)
+    
+        private readonly ApresentacaoService _service;
+        
+        public ApresentacaoController(ApresentacaoService service)
         {
-            _context = context;
-            this.mapper = mapper;
+            _service = service;
         }
 
             ///<summary>
@@ -31,18 +34,55 @@ namespace ApresentacaoController.Controllers
             ///</summary>
             ///<result></result>
 
-         [HttpGet]
-        public ActionResult Get(){
+         [HttpGet("all")]
+        public async Task<IActionResult> GetAll()
+        {
 
-            IEnumerable<Apresentacao> apresentacoes = _context
-            .Apresentacao
-            .Include(a => a.Usuario)
-            .OrderBy(p => p.Titulo)
-            .ToList();
+            try
+            {
+                return Ok(await _service.GetAll());
+            }
+            catch (System.Exception)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest);
+            }
 
-            IEnumerable<ApresentacaoModel> viewModelApresentacao = apresentacoes.Select(x => mapper.Map<ApresentacaoModel>(x));
-            GenericResponse<List<ApresentacaoModel>> response = new GenericResponse<List<ApresentacaoModel>>(viewModelApresentacao.ToList());
-            return Ok(response);
+        }
+
+            ///<summary>
+            ///Mostra os aprovados
+            ///</summary>
+            ///<result></result>
+
+        [HttpGet("aprovadas")]
+        public async Task<ActionResult> GetAprovados()
+        {
+            try
+            {
+                return Ok(await _service.GetAprovadas());
+            }
+            catch(System.Exception)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest);
+            }
+        }
+
+            ///<summary>
+            ///Mostra os reprovados
+            ///</summary>
+            ///<result></result>
+
+        [HttpGet("reprovadas")]
+        public async Task<ActionResult> GetReprovadas()
+        {
+            try
+            {
+                return Ok(await _service.GetReprovadas());
+            }
+            catch(System.Exception)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest);
+            }
         }
 
             ///<summary>
@@ -51,12 +91,20 @@ namespace ApresentacaoController.Controllers
             ///<result></result>
 
         [HttpGet("{id}")]
-        public ActionResult Get(int id){
+        public async Task<ActionResult> GetEspecifico(int id){
             
-            var getApresentacao = _context.Apresentacao.Find(id);
-
-            return Ok(getApresentacao);
+            try
+            {
+                
+                return Ok(await _service.GetEspecifico(id));
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status400BadRequest);
+            }
         }
+
+        
 
             ///<summary>
             ///Insere uma nova apresentacao
@@ -66,46 +114,70 @@ namespace ApresentacaoController.Controllers
         [HttpPost]
         public ActionResult Post(Apresentacao value){
 
-            using(var ctx = new DbOpenSpace()){
-                
-                ctx.Apresentacao.Add(new Apresentacao(){
-                    Titulo = value.Titulo,
-                    Descricao = value.Descricao,
-                    UsuarioId = value.UsuarioId
-                });
-
-                ctx.SaveChanges();
+           try
+           {
+               return Ok(_service.Post(value));
+           }
+            catch
+            {
+                return StatusCode(StatusCodes.Status400BadRequest);
             }
-
-            return Ok();
+            
          
         }
 
-            ///<summary>
+        ///<summary>
             ///Edita uma apresentacao
             ///</summary>
             ///<result></result>
 
         [HttpPut("{id}")]
-        public ActionResult Put(Apresentacao value){
+        public async Task<ActionResult> Put(int id, [FromBody]ApresentacaoModel model)
+        {
+            try
+            {
+               
+                 return Ok(await _service.Put(id, model));
+                
+            }
 
-            using(var ctx = new DbOpenSpace()){
+            catch (System.Exception)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest);
+            }
+        }
 
-                var tituloExistente = ctx.Apresentacao.Where(p => p.Id == value.Id).FirstOrDefault();
 
-                if(tituloExistente != null){
+            ///<summary>
+            ///Edita uma aprovacao/reprovacao
+            ///</summary>
+            ///<result></result>
 
-                    tituloExistente.Titulo = value.Titulo;
-                    tituloExistente.Descricao = value.Descricao;
-                    ctx.SaveChanges();
-
-                }else{
-                    return NotFound();
+        [HttpPut("status/{id}")]
+        public async Task<ActionResult> PutStatus(int id, [FromBody]ApresentacaoModel model)
+        {
+            try
+            {
+                if (model.Aprovado)
+                {
+                    if (model.DataApresentacao < DateTime.Now)
+                        return BadRequest();
+                    return Ok(await _service.Put(id, model));
+                }
+                else
+                {
+                    if (model.MotivoReprovacao == String.Empty)
+                        return BadRequest();
+                    return Ok(await _service.Put(id, model));
                 }
             }
 
-            return Ok();
+            catch (System.Exception)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest);
+            }
         }
+
 
             ///<summary>
             ///Deleta uma apresentacao
@@ -113,17 +185,15 @@ namespace ApresentacaoController.Controllers
             ///<result></result>
 
         [HttpDelete("{id}")]
-        public ActionResult Delete(Apresentacao value){
+        public async Task<ActionResult> Delete(Apresentacao value){
 
-            using(var ctx = new DbOpenSpace()){
-
-                var apresentacao = ctx.Apresentacao.Where(p => p.Id == value.Id).FirstOrDefault();
-
-                ctx.Apresentacao.Remove(apresentacao);
-                ctx.SaveChanges();
+            try{
+                return Ok(await _service.Delete(value));
             }
-
-            return Ok();
+            catch (System.Exception)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest);
+            }
         }
     }
 }

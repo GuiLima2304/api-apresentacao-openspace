@@ -17,6 +17,7 @@ using OpenSpace.Autenticacao;
 using OpenSpace.BancoDados;
 using OpenSpace.Profiles;
 using Swashbuckle.AspNetCore.Swagger;
+using OpenSpace.Services;
 
 namespace OpenSpace
 {
@@ -67,6 +68,7 @@ namespace OpenSpace
             });
 
             services.AddScoped<DbOpenSpace>();
+            services.AddScoped<ApresentacaoService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddJwtValidation(Configuration);

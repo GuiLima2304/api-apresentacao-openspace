@@ -4,39 +4,57 @@
         <name>OpenSpace</name>
     </assembly>
     <members>
-        <member name="M:OpenSpace.Controllers.AuthenticationController.Post(OpenSpace.Model.Login)">
-            <summary>
-            Login, gera um token
-            </summary>
-            <result></result>
-        </member>
-        <member name="M:ApresentacaoController.Controllers.ApresentacaoController.Get">
+        <member name="M:OpenSpace.Controllers.ApresentacaoController.GetAll">
             <summary>
             Mostra todas as apresentacoes
             </summary>
             <result></result>
         </member>
-        <member name="M:ApresentacaoController.Controllers.ApresentacaoController.Get(System.Int32)">
+        <member name="M:OpenSpace.Controllers.ApresentacaoController.GetAprovados">
+            <summary>
+            Mostra os aprovados
+            </summary>
+            <result></result>
+        </member>
+        <member name="M:OpenSpace.Controllers.ApresentacaoController.GetReprovadas">
+            <summary>
+            Mostra os reprovados
+            </summary>
+            <result></result>
+        </member>
+        <member name="M:OpenSpace.Controllers.ApresentacaoController.GetEspecifico(System.Int32)">
             <summary>
             Mostra uma apresentacao especifica
             </summary>
             <result></result>
         </member>
-        <member name="M:ApresentacaoController.Controllers.ApresentacaoController.Post(OpenSpace.BancoDados.Apresentacao)">
+        <member name="M:OpenSpace.Controllers.ApresentacaoController.Post(OpenSpace.BancoDados.Apresentacao)">
             <summary>
             Insere uma nova apresentacao
             </summary>
             <result></result>
         </member>
-        <member name="M:ApresentacaoController.Controllers.ApresentacaoController.Put(OpenSpace.BancoDados.Apresentacao)">
+        <member name="M:OpenSpace.Controllers.ApresentacaoController.Put(System.Int32,OpenSpace.Model.ApresentacaoModel)">
             <summary>
             Edita uma apresentacao
             </summary>
             <result></result>
         </member>
-        <member name="M:ApresentacaoController.Controllers.ApresentacaoController.Delete(OpenSpace.BancoDados.Apresentacao)">
+        <member name="M:OpenSpace.Controllers.ApresentacaoController.PutStatus(System.Int32,OpenSpace.Model.ApresentacaoModel)">
+            <summary>
+            Edita uma aprovacao/reprovacao
+            </summary>
+            <result></result>
+        </member>
+        <member name="M:OpenSpace.Controllers.ApresentacaoController.Delete(OpenSpace.BancoDados.Apresentacao)">
             <summary>
             Deleta uma apresentacao
+            </summary>
+            <result></result>
+        </member>
+        <member name="M:OpenSpace.Controllers.AuthenticationController.Post(OpenSpace.Model.Login)">
+            <summary>
+            Login, gera um token
             </summary>
             <result></result>
         </member>

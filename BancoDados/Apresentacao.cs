@@ -14,6 +14,9 @@ namespace OpenSpace.BancoDados
         public string Titulo { get; set; }
         public string Descricao { get; set; }
         public int UsuarioId { get; set; }
+         public bool Aprovado { get; set; }
+        public string MotivoReprovacao { get; set; }
+        public DateTime? DataApresentacao { get; set; }
 
         public virtual Usuario Usuario { get; set; }
         public virtual ICollection<Arquivo> Arquivo { get; set; }
