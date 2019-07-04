@@ -1,12 +1,6 @@
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using OpenSpace.Mapping;
 using OpenSpace.BancoDados;
-using AutoMapper;
 using OpenSpace.Model;
-using OpenSpace.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -15,7 +9,6 @@ using OpenSpace.Services;
 
 namespace OpenSpace.Controllers
 {
-
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
@@ -29,6 +22,7 @@ namespace OpenSpace.Controllers
             _service = service;
         }
 
+
             ///<summary>
             ///Mostra todas as apresentacoes
             ///</summary>
@@ -37,7 +31,6 @@ namespace OpenSpace.Controllers
          [HttpGet("all")]
         public async Task<IActionResult> GetAll()
         {
-
             try
             {
                 return Ok(await _service.GetAll());
@@ -46,8 +39,8 @@ namespace OpenSpace.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest);
             }
-
         }
+
 
             ///<summary>
             ///Mostra os aprovados
@@ -67,6 +60,7 @@ namespace OpenSpace.Controllers
             }
         }
 
+
             ///<summary>
             ///Mostra os reprovados
             ///</summary>
@@ -84,6 +78,7 @@ namespace OpenSpace.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest);
             }
         }
+
 
             ///<summary>
             ///Mostra uma apresentacao especifica
@@ -104,7 +99,6 @@ namespace OpenSpace.Controllers
             }
         }
 
-        
 
             ///<summary>
             ///Insere uma nova apresentacao
@@ -122,11 +116,10 @@ namespace OpenSpace.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest);
             }
-            
-         
         }
 
-        ///<summary>
+
+            ///<summary>
             ///Edita uma apresentacao
             ///</summary>
             ///<result></result>
@@ -137,10 +130,9 @@ namespace OpenSpace.Controllers
             try
             {
                
-                 return Ok(await _service.Put(id, model));
+                return Ok(await _service.Put(id, model));
                 
             }
-
             catch (System.Exception)
             {
                 return StatusCode(StatusCodes.Status400BadRequest);
@@ -171,7 +163,6 @@ namespace OpenSpace.Controllers
                     return Ok(await _service.Put(id, model));
                 }
             }
-
             catch (System.Exception)
             {
                 return StatusCode(StatusCodes.Status400BadRequest);
